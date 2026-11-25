@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css?v=earnings1">
   <link rel="stylesheet" href="diagram.css">
   <link rel="preload" href="brand/montserrat-700.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="forus.css?v=1">
+  <link rel="stylesheet" href="forus.css?v=2">
   <script src="model.js" defer></script>
   <script src="bond-model.js" defer></script>
   <script src="diagram.js?v=brand1" defer></script>
@@ -41,6 +41,25 @@
     <button id="tab-wow" class="model-tab" type="button" data-model="wow" data-short="WOW" aria-label="WOW daily economy" aria-pressed="false"><span>WOW daily economy<small>Cash in, fares, fuel and rewards</small></span></button>
     <button id="tab-bond" class="model-tab" type="button" data-model="bond" data-short="Agri bond" aria-label="Agricultural bond" aria-pressed="false"><span>Agricultural bond<small>Capital, cooperative receipts and repayment</small></span></button>
   </nav>
+  <section class="journal-section earnings" id="earnings" aria-labelledby="earnings-heading">
+    <div class="journal-header earnings-header">
+      <div><h2 id="earnings-heading" tabindex="-1">Who made money?</h2><p id="earnings-basis"></p></div>
+      <label class="field earnings-period">Show amounts through<select id="earnings-period"></select></label>
+    </div>
+    <div class="earnings-grid">
+      <div>
+        <h3>Amount by participant</h3>
+        <ul class="earnings-ranking" id="earnings-ranking"></ul>
+      </div>
+      <div class="earnings-trend">
+        <h3>How the amount changed</h3>
+        <label class="field">Participant<select id="earnings-person"></select></label>
+        <div class="earnings-readout"><strong id="earnings-amount"></strong><span id="earnings-through"></span></div>
+        <div id="earnings-plot"></div>
+        <details class="earnings-history"><summary>See transactions that changed this amount</summary><ol id="earnings-events"></ol></details>
+      </div>
+    </div>
+  </section>
   <section class="model-intro" aria-labelledby="model-heading">
     <div><h2 id="model-heading">Aggregated Benefit Ledger</h2><p id="model-description"></p><div class="intro-actions"><button id="watch-flow" class="button primary" type="button" aria-controls="flow-diagram">Watch animated flow</button><button id="view-earnings" class="button" type="button" aria-controls="earnings">View earnings charts</button><a id="guide-link" class="guide-link" href="docs/FORUS_Aggregated_Benefit_Ledger_Funds_Flow.docx" download>Download flow guide</a></div></div>
     <div class="model-key"><span><i class="key-dot cash"></i>Cash transfer</span><span><i class="key-dot ledger"></i>Ledger movement</span><span><i class="key-dot pending"></i><span id="pending-legend">Pending reward</span></span></div>
@@ -102,25 +121,6 @@
       </section>
     </div>
   </div>
-  <section class="journal-section earnings" id="earnings" aria-labelledby="earnings-heading">
-    <div class="journal-header earnings-header">
-      <div><h2 id="earnings-heading" tabindex="-1">Who made money?</h2><p id="earnings-basis"></p></div>
-      <label class="field earnings-period">Show amounts through<select id="earnings-period"></select></label>
-    </div>
-    <div class="earnings-grid">
-      <div>
-        <h3>Amount by participant</h3>
-        <ul class="earnings-ranking" id="earnings-ranking"></ul>
-      </div>
-      <div class="earnings-trend">
-        <h3>How the amount changed</h3>
-        <label class="field">Participant<select id="earnings-person"></select></label>
-        <div class="earnings-readout"><strong id="earnings-amount"></strong><span id="earnings-through"></span></div>
-        <div id="earnings-plot"></div>
-        <details class="earnings-history"><summary>See transactions that changed this amount</summary><ol id="earnings-events"></ol></details>
-      </div>
-    </div>
-  </section>
   <section class="annual-section" id="annual-section" aria-labelledby="annual-heading" hidden>
     <div class="journal-header"><div><h2 id="annual-heading">Five-year waterfall</h2><p id="annual-description"></p></div><span class="annual-units">USD · Full scenario</span></div>
     <div id="annual-summary" class="annual-summary"></div>

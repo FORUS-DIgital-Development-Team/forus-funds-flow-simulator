@@ -79,6 +79,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 .workspace { padding-top: clamp(1.2rem, 2.4vw, 2.1rem); padding-bottom: 1rem; }
 .model-tabs { background: #fff; border-color: var(--border); border-radius: 14px; gap: .35rem; padding: .35rem; }
+.model-tabs + .earnings { margin-top: .75rem; }
 .model-tab { color: var(--navy); border-radius: 10px; padding: 1rem 1.2rem; line-height: 1.32; }
 .model-tab small { color: var(--muted); opacity: 1; }
 .model-tab:hover { background: var(--mist); }
