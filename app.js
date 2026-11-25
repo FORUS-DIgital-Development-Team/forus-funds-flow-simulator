@@ -15,6 +15,7 @@
   let currentInputs = null;
   let diagram = null;
   let earningsCharts;
+  let capitalView;
   const modelStates = {};
 
   const definitions = {
@@ -188,6 +189,7 @@
 
   function updatePresetHelp() {
     const preset = definition().presets.find(item => item.id === $('preset-select').value);
+    $('edit-preset').hidden = Boolean(preset);
     $('preset-help').textContent = preset ? preset.help : 'Your values are used exactly as entered, subject to balance and allocation checks.';
   }
 
@@ -223,6 +225,7 @@
     $('dirty-message').hidden = true;
     $('step-select').innerHTML = next.steps.map((step,index) => '<option value="'+index+'">'+(index+1)+'. '+esc(step.title)+'</option>').join('');
     renderSources();
+    if (capitalView) capitalView.render(next);
     render();
     return true;
   }
@@ -464,6 +467,7 @@
 
   function init(){
     if(!window.FlowModel){document.querySelector('.layout').innerHTML='<div class="unavailable"><h3>Simulator is loading</h3><p>The accounting model is not available yet. Refresh the page once the build is complete.</p></div>';return;}
+    if (window.Velocity && $('velocity-panel')) capitalView = Velocity.create({money, esc, simulateBond:inputs => BondModel.simulate(inputs)});
     if (window.ParticipantCharts && $('earnings')) {
       earningsCharts = ParticipantCharts.create({money, esc, goTo});
       $('view-earnings').dataset.jump = 'earnings-heading';
@@ -471,7 +475,7 @@
     document.querySelectorAll('[data-jump]').forEach(button => button.addEventListener('click', () => {
       const heading = $(button.dataset.jump);
       heading.focus({preventScroll:true});
-      heading.closest('section').scrollIntoView({block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+      heading.closest('section, aside').scrollIntoView({block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
     }));
     if(window.FlowDiagram)diagram=FlowDiagram.create($('flow-diagram'));
     else $('flow-diagram').textContent='The diagram is unavailable. Open the transaction details below to follow each movement.';
@@ -491,7 +495,7 @@
     $('reset-button').addEventListener('click',()=>goTo(0));
     $('step-select').addEventListener('change',()=>goTo(Number($('step-select').value)));
     $('export-csv').addEventListener('click',exportCSV);
-    $('export-json').addEventListener('click',()=>download(JSON.stringify({title:'FORUS flow of funds',model:mode,view:mode==='bond'?bondView:undefined,currency:currencyCode(),date:'2026-11-24',basis:'Illustrative assumptions, not live transactions',displayedStep:stepIndex+1,...result},null,2),'application/json','FORUS_'+(mode==='bond'?'bond_'+bondView:mode)+'_scenario.json'));
+    $('export-json').addEventListener('click',()=>download(JSON.stringify({title:'FORUS flow of funds',model:mode,view:mode==='bond'?bondView:undefined,currency:currencyCode(),date:'2026-11-25',basis:'Illustrative assumptions, not live transactions',displayedStep:stepIndex+1,velocityIllustration:capitalView?.snapshot(),...result},null,2),'application/json','FORUS_'+(mode==='bond'?'bond_'+bondView:mode)+'_scenario.json'));
     $('print-button').addEventListener('click',()=>{stop();window.print();});
     switchModel(mode);
   }

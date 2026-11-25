@@ -9,12 +9,14 @@
   <link rel="stylesheet" href="styles.css?v=earnings1">
   <link rel="stylesheet" href="diagram.css">
   <link rel="preload" href="brand/montserrat-700.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="forus.css?v=2">
+  <link rel="stylesheet" href="forus.css?v=3">
   <script src="model.js" defer></script>
   <script src="bond-model.js" defer></script>
   <script src="diagram.js?v=brand1" defer></script>
   <script src="participant-charts.js" defer></script>
-  <script src="app.js?v=brand1" defer></script>
+  <script src="impact.js" defer></script>
+  <script src="velocity.js" defer></script>
+  <script src="app.js?v=returns1" defer></script>
 </head>
 <body class="simulator">
 <header class="masthead">
@@ -31,7 +33,7 @@
       <p class="eyebrow">Illustrative financial model</p>
       <h1>Flow of funds <span>simulator</span></h1>
       <p class="hero-sub">See who pays, who receives and what remains owed at each step.</p>
-      <div class="hero-meta"><span id="header-currency">South African rand (ZAR)</span><span>No live transactions</span><time datetime="2026-11-24">24 November 2026</time></div>
+      <div class="hero-meta"><span id="header-currency">South African rand (ZAR)</span><span>No live transactions</span><time datetime="2026-11-25">25 November 2026</time></div>
     </div></div>
   </div>
 </header>
@@ -41,11 +43,86 @@
     <button id="tab-wow" class="model-tab" type="button" data-model="wow" data-short="WOW" aria-label="WOW daily economy" aria-pressed="false"><span>WOW daily economy<small>Cash in, fares, fuel and rewards</small></span></button>
     <button id="tab-bond" class="model-tab" type="button" data-model="bond" data-short="Agri bond" aria-label="Agricultural bond" aria-pressed="false"><span>Agricultural bond<small>Capital, cooperative receipts and repayment</small></span></button>
   </nav>
+  <div class="scenario-control" role="group" aria-label="Scenario selection">
+      <label class="field bond-view-field" id="bond-view-field" hidden><span>Bond view</span><select id="bond-view"><option value="portfolio">Five-year portfolio waterfall</option><option value="facility">Cooperative facility flow</option></select></label>
+      <label class="field preset-field"><span>Choose a scenario</span><select id="preset-select"></select></label>
+      <div class="field-help"><p id="preset-help"></p><button type="button" class="edit-preset" id="edit-preset" hidden data-jump="assumption-heading">Edit transaction assumptions</button></div>
+  </div>
   <section class="journal-section earnings" id="earnings" aria-labelledby="earnings-heading">
     <div class="journal-header earnings-header">
-      <div><h2 id="earnings-heading" tabindex="-1">Who made money?</h2><p id="earnings-basis"></p></div>
-      <label class="field earnings-period">Show amounts through<select id="earnings-period"></select></label>
+      <div><h2 id="earnings-heading" tabindex="-1">Who made money?</h2>
+        <div class="return-switch" role="group" aria-label="Earnings and impact views">
+          <button type="button" id="show-capital" aria-pressed="true" aria-controls="velocity-panel">Investors &amp; sponsors</button>
+          <button type="button" id="show-impact" aria-pressed="false" aria-controls="impact-panel">Economic &amp; social impact</button>
+          <button type="button" id="show-participants" aria-pressed="false" aria-controls="participant-panel">Transaction earnings</button>
+        </div>
+      </div>
+      <label class="field earnings-period" id="participant-period" hidden>Show amounts through<select id="earnings-period"></select></label>
     </div>
+    <div id="projection-panel">
+      <div class="velocity-controls">
+        <label class="field">Digitisation scenario<select id="velocity-case">
+          <option value="none">No efficiency gain</option><option value="cautious">Cautious adoption</option><option value="central" selected>Central estimate</option><option value="high">High adoption</option><option value="custom">Custom assumptions</option>
+        </select></label>
+        <div><strong id="velocity-turns"></strong><p id="velocity-days"></p></div>
+      </div>
+      <div id="velocity-panel">
+        <p id="velocity-summary"></p>
+        <div id="velocity-results" aria-live="polite" aria-atomic="true"></div>
+      </div>
+      <div id="impact-panel" hidden>
+        <h3>What did the funding make possible?</h3>
+        <div class="impact-controls">
+          <label class="field" id="impact-scope-field">Funding being assessed<select id="impact-scope">
+            <option value="programme">Whole funded programme</option><option value="rewards">Reward sponsors only</option>
+          </select></label>
+          <label class="field">Sales that would happen without this funding <span class="impact-range"><input type="range" min="0" max="100" step="1" value="0" id="impact-alternative"><output for="impact-alternative" id="impact-percent">0%</output></span></label>
+        </div>
+        <div id="impact-results" aria-live="polite" aria-atomic="true"></div>
+        <section id="wow-reported" class="wow-reported" aria-labelledby="wow-reported-heading" hidden>
+          <h4 id="wow-reported-heading">Reported WOW fuel activity · October 2025 to January 2026</h4>
+          <div class="impact-distribution">
+            <div><strong class="impact-total">R33,556</strong><p>WOW reports this amount was distributed to operators, drivers, associations, regions and the province. Across the reported 17,135 litres, that averages about R1.96 distributed per litre.</p></div>
+            <div><h4>Litres dispensed through the rebate programme</h4>
+              <ul>
+                <li><span>Oct 2025</span><strong>200 L</strong><span class="impact-track" aria-hidden="true"><i style="width:1.73%"></i></span></li>
+                <li><span>Nov 2025</span><strong>1,735 L</strong><span class="impact-track" aria-hidden="true"><i style="width:15.00%"></i></span></li>
+                <li><span>Dec 2025</span><strong>3,630 L</strong><span class="impact-track" aria-hidden="true"><i style="width:31.38%"></i></span></li>
+                <li><span>Jan 2026</span><strong>11,569 L</strong><span class="impact-track" aria-hidden="true"><i style="width:100%"></i></span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="velocity-foot">The <cite>WOW Impact Engine</cite> reports these figures in “What we can showcase”. Its monthly volumes sum to 17,134 litres, one litre below its stated total. The chart provides historical context. Independent verification requires the underlying settlement records.</p>
+        </section>
+        <details class="velocity-evidence"><summary>How to verify social impact</summary>
+          <p>The WOW Impact Engine defines value returned by beneficiary class. Here the cash flows are scenarios. Verified results require matching sponsor settlement to wallet credits, reversals and the member registry for the reporting period.</p>
+          <p>Count each active member once across turns. Use consented registry data to report women’s and youth participation and their shares of funded value. To estimate changes in household income, travel costs or safety, compare baseline and follow-up surveys and publish dates and sample sizes.</p>
+          <p>The comparison estimates additional sales. A pilot can test how much trade would have happened through cash, another lender or another merchant. Profit and local value added require production-cost data. <a href="https://www.ifc.org/content/dam/ifc/doc/latest/aimm-general-guidance-note.pdf" target="_blank" rel="noopener">IFC guidance on counterfactuals</a></p>
+        </details>
+      </div>
+      <details id="velocity-assumptions"><summary>Edit cycle time and commercial assumptions</summary>
+        <div class="velocity-fields">
+          <label class="field">Baseline days per cash cycle<input id="v-days" type="number" min="1" max="360" step="1" value="30"></label>
+          <label class="field">Days removed from the cycle<input id="v-saved" type="number" min="0" max="359" step="1" value="5"></label>
+          <label class="field savings-field">Addressable cost (% of settled sales)<input id="v-cost" type="number" min="0" max="100" step="0.01" value="5"></label>
+          <label class="field savings-field">Reduction in that cost (%)<input id="v-reduction" type="number" min="0" max="100" step="0.01" value="20"></label>
+          <label class="field savings-field">Customer share of savings (%)<input id="v-customer" type="number" min="0" max="100" step="0.01" value="50"></label>
+          <label class="field savings-field">Investor share of savings (%)<input id="v-investor" type="number" min="0" max="100" step="0.01" value="25"></label>
+          <label class="field savings-field">Annual investor costs (R)<input id="v-expense" type="number" min="0" max="1000000000" step="0.01" value="0"></label>
+        </div>
+        <p id="velocity-method"></p>
+      </details>
+      <details class="velocity-evidence"><summary>Research behind the estimates</summary>
+        <ul>
+          <li>IFC found payment terms of 30–90 days between MSME suppliers and anchor firms in a representative Kenyan supply chain. We use 30 days as an illustrative starting point for the cash cycle. <a href="https://www.ifc.org/content/dam/ifc/doc/mgrt/202210-supply-chain-finance-market-assessment-kenya.pdf" target="_blank" rel="noopener">IFC Kenya supply-chain assessment (2022)</a></li>
+          <li>HSBC and ING completed a soybean trade’s letter-of-credit document exchange in 24 hours. Paper exchanges usually took 5–10 days. The scenarios remove 0, 2, 5 or 9 days from a whole cycle only if that work delays cash collection. Production time and payment terms can limit the gain. <a href="https://www.hsbc.com/-/files/hsbc/media/media-release/2018/180514-hsbc-trade-blockchain-transaction-press-release.pdf?download=1" target="_blank" rel="noopener">HSBC and ING transaction (2018)</a></li>
+          <li>In a Niger field experiment, mobile delivery cut variable cash-transfer costs by about 20%, while initial costs were higher. Recipients waited about 30 minutes on average, compared with four hours for cash. We test cost reductions of 0%, 10%, 20% and 30% of addressable processing costs. Customer price savings depend on the assumed pass-through. <a href="https://bpb-us-e1.wpmucdn.com/sites.tufts.edu/dist/6/45/files/2010/02/Published-Version-with-Erratum-Corrections_aug2017.pdf" target="_blank" rel="noopener">Aker et al., Niger cash-transfer experiment (2016)</a></li>
+          <li>For a customer-price benchmark, the World Bank found average charges of 4.59% for digital services and 7.30% for non-digital services when sending US$200 abroad in Q3 2025. This cross-border comparison gives context only. Merchant savings in the calculator use the editable local cost base. <a href="https://remittanceprices.worldbank.org/sites/default/files/2026-04/RPW_main_report_and_annex_Q325.pdf" target="_blank" rel="noopener">World Bank Remittance Prices Worldwide, issue 54</a></li>
+        </ul>
+        <p>The 5% cost base and the split between customers (50%), investors (25%) and sponsors (25%) are illustrative commercial assumptions. FORUS pilot data or signed terms can replace them.</p>
+      </details>
+    </div>
+    <div id="participant-panel" hidden><p id="earnings-basis"></p>
     <div class="earnings-grid">
       <div>
         <h3>Amount by participant</h3>
@@ -59,6 +136,7 @@
         <details class="earnings-history"><summary>See transactions that changed this amount</summary><ol id="earnings-events"></ol></details>
       </div>
     </div>
+    </div>
   </section>
   <section class="model-intro" aria-labelledby="model-heading">
     <div><h2 id="model-heading">Aggregated Benefit Ledger</h2><p id="model-description"></p><div class="intro-actions"><button id="watch-flow" class="button primary" type="button" aria-controls="flow-diagram">Watch animated flow</button><button id="view-earnings" class="button" type="button" aria-controls="earnings">View earnings charts</button><a id="guide-link" class="guide-link" href="docs/FORUS_Aggregated_Benefit_Ledger_Funds_Flow.docx" download>Download flow guide</a></div></div>
@@ -66,10 +144,7 @@
   </section>
   <div class="layout">
     <aside class="assumptions" aria-labelledby="assumption-heading">
-      <div class="section-heading"><h3 id="assumption-heading">Scenario assumptions</h3></div>
-      <label class="field bond-view-field" id="bond-view-field" hidden><span>Bond view</span><select id="bond-view"><option value="portfolio">Five-year portfolio waterfall</option><option value="facility">Cooperative facility flow</option></select></label>
-      <label class="field preset-field"><span>Choose a scenario</span><select id="preset-select"></select></label>
-      <p class="field-help" id="preset-help"></p>
+      <div class="section-heading"><h3 id="assumption-heading" tabindex="-1">Scenario assumptions</h3></div>
       <form id="inputs-form" novalidate>
         <div id="primary-inputs"></div>
         <details id="advanced-details"><summary>More assumptions and allocations</summary><div id="advanced-inputs"></div></details>
