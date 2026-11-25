@@ -356,6 +356,7 @@
   }
   return Object.freeze({
     defaults,
+    ratio, pct, split,
     simulateBenefit: inputs => run('benefit', benefitCore, inputs),
     simulateWow: inputs => run('wow', wowCore, inputs)
   });

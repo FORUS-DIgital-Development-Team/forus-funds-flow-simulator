@@ -467,7 +467,7 @@
 
   function init(){
     if(!window.FlowModel){document.querySelector('.layout').innerHTML='<div class="unavailable"><h3>Simulator is loading</h3><p>The accounting model is not available yet. Refresh the page once the build is complete.</p></div>';return;}
-    if (window.Velocity && $('velocity-panel')) capitalView = Velocity.create({money, esc, simulateBond:inputs => BondModel.simulate(inputs)});
+    if (window.Velocity && $('velocity-panel')) capitalView = Velocity.create({money, esc, simulateBond:inputs => BondModel.simulate(inputs), fleet:WowFleet.create({money, esc})});
     if (window.ParticipantCharts && $('earnings')) {
       earningsCharts = ParticipantCharts.create({money, esc, goTo});
       $('view-earnings').dataset.jump = 'earnings-heading';

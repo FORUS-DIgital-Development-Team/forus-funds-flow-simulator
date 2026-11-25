@@ -9,14 +9,15 @@
   <link rel="stylesheet" href="styles.css?v=earnings1">
   <link rel="stylesheet" href="diagram.css">
   <link rel="preload" href="brand/montserrat-700.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="forus.css?v=3">
-  <script src="model.js" defer></script>
+  <link rel="stylesheet" href="forus.css?v=fleet1">
+  <script src="model.js?v=fleet1" defer></script>
   <script src="bond-model.js" defer></script>
   <script src="diagram.js?v=brand1" defer></script>
   <script src="participant-charts.js" defer></script>
   <script src="impact.js" defer></script>
-  <script src="velocity.js" defer></script>
-  <script src="app.js?v=returns1" defer></script>
+  <script src="velocity.js?v=fleet1" defer></script>
+  <script src="fuel-fleet.js" defer></script>
+  <script src="app.js?v=fleet1" defer></script>
 </head>
 <body class="simulator">
 <header class="masthead">
@@ -52,6 +53,7 @@
     <div class="journal-header earnings-header">
       <div><h2 id="earnings-heading" tabindex="-1">Who made money?</h2>
         <div class="return-switch" role="group" aria-label="Earnings and impact views">
+          <button type="button" id="show-fleet" aria-pressed="false" aria-controls="fleet-panel" hidden>Fuel fleet earnings</button>
           <button type="button" id="show-capital" aria-pressed="true" aria-controls="velocity-panel">Investors &amp; sponsors</button>
           <button type="button" id="show-impact" aria-pressed="false" aria-controls="impact-panel">Economic &amp; social impact</button>
           <button type="button" id="show-participants" aria-pressed="false" aria-controls="participant-panel">Transaction earnings</button>
@@ -66,6 +68,23 @@
         </select></label>
         <div><strong id="velocity-turns"></strong><p id="velocity-days"></p></div>
       </div>
+      <section id="fleet-panel" aria-labelledby="fleet-heading" hidden>
+        <h3 id="fleet-heading">What could a larger fuel fleet earn?</h3>
+        <p>Start with a month of reported WOW fuel purchases. Vehicle counts and commercial terms are illustrative. Change them to compare annual earnings.</p>
+        <div class="fleet-controls">
+          <label class="field">Reported starting month<select id="fleet-month"></select></label>
+          <label class="field">Starting vehicles (assumed)<input id="fleet-start" type="number" min="1" max="1000000" step="1" value="100"></label>
+          <label class="field">Participating vehicles<input id="fleet-target" type="number" min="0" max="1000000" step="1" value="200"></label>
+          <div><label class="field">Target turns per year<input id="fleet-turns" type="number" min="0" max="360" step="1" value="14"></label><button type="button" class="edit-preset" id="fleet-follow" hidden>Use digitisation scenario</button></div>
+        </div>
+        <label class="fleet-demand"><input type="checkbox" id="fleet-demand" checked> Extra turns can serve additional fuel demand</label>
+        <div id="fleet-results" aria-live="polite" aria-atomic="true"></div>
+        <details id="fleet-method"><summary>Sources and calculation</summary>
+          <p>The <cite>WOW Impact Engine</cite> reports monthly litres and total distributions of R33,556 over 17,135 litres from October 2025 to January 2026. Monthly figures add to 17,134 litres. The projected rebate per litre uses the reported period totals at full precision. The starting vehicle count and baseline turns are assumptions.</p>
+          <p>Annual fuel volume starts at 12 times the selected month’s litres. Scale by participating vehicles divided by starting vehicles, then by target turns divided by baseline turns. Turning off additional demand caps fuel per vehicle at the starting annual rate. Each turn represents a funded cycle with constant litres per vehicle per turn.</p>
+          <p>The selected WOW scenario supplies the fuel price, merchant settlement rate, rebate funding rate and recipient shares. Cash-in must settle for purchases to proceed. Reported litres replace the example’s batch size. Each annual projection rounds cash flows to cents.</p>
+        </details>
+      </section>
       <div id="velocity-panel">
         <p id="velocity-summary"></p>
         <div id="velocity-results" aria-live="polite" aria-atomic="true"></div>
@@ -84,15 +103,11 @@
           <div class="impact-distribution">
             <div><strong class="impact-total">R33,556</strong><p>WOW reports this amount was distributed to operators, drivers, associations, regions and the province. Across the reported 17,135 litres, that averages about R1.96 distributed per litre.</p></div>
             <div><h4>Litres dispensed through the rebate programme</h4>
-              <ul>
-                <li><span>Oct 2025</span><strong>200 L</strong><span class="impact-track" aria-hidden="true"><i style="width:1.73%"></i></span></li>
-                <li><span>Nov 2025</span><strong>1,735 L</strong><span class="impact-track" aria-hidden="true"><i style="width:15.00%"></i></span></li>
-                <li><span>Dec 2025</span><strong>3,630 L</strong><span class="impact-track" aria-hidden="true"><i style="width:31.38%"></i></span></li>
-                <li><span>Jan 2026</span><strong>11,569 L</strong><span class="impact-track" aria-hidden="true"><i style="width:100%"></i></span></li>
-              </ul>
+              <ul id="wow-history-months"></ul>
             </div>
           </div>
-          <p class="velocity-foot">The <cite>WOW Impact Engine</cite> reports these figures in “What we can showcase”. Its monthly volumes sum to 17,134 litres, one litre below its stated total. The chart provides historical context. Independent verification requires the underlying settlement records.</p>
+          <p class="velocity-foot">The <cite>WOW Impact Engine</cite> reports these figures in “What we can showcase”. Its monthly volumes sum to 17,134 litres, one litre below its stated total. Independent verification requires the underlying settlement records.</p>
+          <button type="button" id="open-fleet" class="edit-preset">Explore earnings at these fuel volumes</button>
         </section>
         <details class="velocity-evidence"><summary>How to verify social impact</summary>
           <p>The WOW Impact Engine defines value returned by beneficiary class. Here the cash flows are scenarios. Verified results require matching sponsor settlement to wallet credits, reversals and the member registry for the reporting period.</p>

@@ -32,15 +32,19 @@
       throw new Error('Enter non-negative annual investor costs up to R1 billion, rounded to cents.');
   }
 
+  function savingsOn(sales, t) {
+    const pool = percent(percent(sales, t.cost), t.reduction);
+    const customer = percent(pool, t.customer);
+    const investor = Math.min(pool - customer, percent(pool, t.investor));
+    return {pool, customer, investor, sponsor:pool - customer - investor};
+  }
+
   function retail(result, t, baseTurns, fastTurns) {
     const b = result.closing.balances, m = result.closing.metrics;
     const benefit = result.model === 'benefit';
     const sales = cents(benefit ? b.merchantReceiptsCents + b.supplierReceiptsCents : b.fuelMerchantReceivedCents + b.shopMerchantReceivedCents);
     const funding = cents(benefit ? m.consumedCents + b.platformFeesCents : m.totalRewardsFundedCents);
-    const pool = percent(percent(sales, t.cost), t.reduction);
-    const customer = percent(pool, t.customer);
-    const investor = Math.min(pool - customer, percent(pool, t.investor));
-    const sponsor = pool - customer - investor;
+    const {pool, customer, investor, sponsor} = savingsOn(sales, t);
     const expense = Math.round(t.expense * 100);
     const annual = (perTurn, turns) => cents(perTurn * turns);
     const earnings = turns => cents(annual(investor, turns) - expense);
@@ -99,7 +103,7 @@
     return {...data, baseTurns, fastTurns, isBond};
   }
 
-  function create({money, esc, simulateBond}) {
+  function create({money, esc, simulateBond, fleet}) {
     const el = id => document.getElementById(id);
     const panel = el('projection-panel'), selector = el('velocity-case'), fields = el('velocity-assumptions');
     const impact = Impact.create({money, esc});
@@ -107,8 +111,10 @@
     let scenario, lastComparison;
     const terms = () => Object.fromEntries(Object.entries(inputs).map(([key, input]) => [key, input.valueAsNumber]));
 
-    const views = {capital:'velocity-panel', impact:'impact-panel', participants:'participant-panel'};
+    const views = {fleet:'fleet-panel', capital:'velocity-panel', impact:'impact-panel', participants:'participant-panel'};
+    let preferred = new URLSearchParams(location.search).get('view');
     function chooseView(view) {
+      panel.dataset.view = view;
       for (const [name, id] of Object.entries(views)) {
         el(id).hidden = name !== view;
         el('show-' + name).setAttribute('aria-pressed', String(name === view));
@@ -118,15 +124,17 @@
     }
     for (const view of Object.keys(views)) {
       el('show-' + view).addEventListener('click', () => {
+        preferred = view;
         chooseView(view);
         const url = new URL(location.href);
-        if (view === 'capital') url.searchParams.delete('view');
-        else url.searchParams.set('view', view);
+        url.searchParams.set('view', view);
         history.replaceState(null, '', url);
       });
     }
-    const requested = new URLSearchParams(location.search).get('view');
-    chooseView(Object.hasOwn(views, requested) ? requested : 'capital');
+    el('open-fleet').addEventListener('click', () => {
+      el('show-fleet').click();
+      el('show-fleet').focus();
+    });
     selector.addEventListener('change', () => {
       if (selector.value === 'custom') { fields.open = true; inputs.days.focus(); draw(); return; }
       const [saved, reduction] = presets[selector.value];
@@ -145,12 +153,14 @@
       catch (error) {
         lastComparison = null;
         impact.render(scenario, null);
+        fleet.render(scenario, t, null);
         for (const key of ['turns','days','summary','method']) el('velocity-' + key).textContent = '';
         el('velocity-results').innerHTML = '<p class="velocity-error" role="alert">' + esc(error.message) + '</p>';
         return;
       }
       lastComparison = {assumptions:t, preset:selector.value, ...d};
       impact.render(scenario, d);
+      fleet.render(scenario, t, d);
       el('velocity-turns').textContent = d.baseTurns + ' → ' + d.fastTurns + ' potential turns per year';
       el('velocity-days').textContent = t.days + ' → ' + (t.days - t.saved) + ' days per cash cycle · 360-day year';
       el('velocity-summary').textContent = d.summary;
@@ -190,12 +200,19 @@
         headings.map(h => '<th scope="col">' + h + '</th>').join('') + '</tr></thead><tbody>' + rows + '</tbody></table><p class="velocity-foot">' + esc(captionNote) + '</p>' + sensitivity;
     }
 
-    function render(result) { scenario = result; draw(); }
-    function snapshot() { return lastComparison ? {...lastComparison, fundingComparison:impact.snapshot()} : {status:'invalid assumptions'}; }
+    function render(result) {
+      scenario = result;
+      const wow = result.model === 'wow';
+      el('show-fleet').hidden = !wow;
+      const selected = Object.hasOwn(views, preferred) && (preferred !== 'fleet' || wow);
+      chooseView(selected ? preferred : wow ? 'fleet' : 'capital');
+      draw();
+    }
+    function snapshot() { return lastComparison ? {...lastComparison, fundingComparison:impact.snapshot(), fleetProjection:scenario.model === 'wow' ? fleet.snapshot() : undefined} : {status:'invalid assumptions'}; }
     return {render, snapshot};
   }
 
-  const api = {compare, create, defaults};
+  const api = {compare, create, defaults, savingsOn};
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.Velocity = api;
 })(globalThis);
