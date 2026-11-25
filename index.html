@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css?v=earnings1">
   <link rel="stylesheet" href="diagram.css">
   <link rel="preload" href="brand/montserrat-700.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="forus.css?v=fleet1">
+  <link rel="stylesheet" href="forus.css?v=playback1">
   <script src="model.js?v=fleet1" defer></script>
   <script src="bond-model.js" defer></script>
   <script src="diagram.js?v=brand1" defer></script>
@@ -154,7 +154,7 @@
     </div>
   </section>
   <section class="model-intro" aria-labelledby="model-heading">
-    <div><h2 id="model-heading">Aggregated Benefit Ledger</h2><p id="model-description"></p><div class="intro-actions"><button id="watch-flow" class="button primary" type="button" aria-controls="flow-diagram">Watch animated flow</button><button id="view-earnings" class="button" type="button" aria-controls="earnings">View earnings charts</button><a id="guide-link" class="guide-link" href="docs/FORUS_Aggregated_Benefit_Ledger_Funds_Flow.docx" download>Download flow guide</a></div></div>
+    <div><h2 id="model-heading">Aggregated Benefit Ledger</h2><p id="model-description"></p><div class="intro-actions"><button id="watch-flow" class="button playback" type="button" aria-controls="flow-diagram">Watch animated flow</button><button id="view-earnings" class="button" type="button" aria-controls="earnings">View earnings charts</button><a id="guide-link" class="guide-link" href="docs/FORUS_Aggregated_Benefit_Ledger_Funds_Flow.docx" download>Download flow guide</a></div></div>
     <div class="model-key"><span><i class="key-dot cash"></i>Cash transfer</span><span><i class="key-dot ledger"></i>Ledger movement</span><span><i class="key-dot pending"></i><span id="pending-legend">Pending reward</span></span></div>
   </section>
   <div class="layout">
@@ -175,7 +175,7 @@
       <section class="step-card" aria-labelledby="step-title">
         <div class="step-topline"><span class="section-label">Transaction explorer</span><span class="step-counter" id="step-counter"></span></div>
         <div class="step-controls">
-          <button class="button primary" id="play-button" type="button">Play flow</button>
+          <button class="button playback" id="play-button" type="button" aria-controls="flow-diagram" aria-pressed="false">Play flow</button>
           <button class="button" id="previous-button" type="button">Previous</button>
           <button class="button" id="next-button" type="button">Next step</button>
           <button class="button quiet" id="finish-button" type="button">Final position</button>
