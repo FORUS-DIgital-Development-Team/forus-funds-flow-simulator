@@ -1,0 +1,190 @@
+/* FORUS Digital Cooperative colours and locally hosted Montserrat. */
+@font-face {
+  font-family: Montserrat;
+  src: url("brand/montserrat-400.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("brand/montserrat-700.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --navy: #1e254a;
+  --ink: #1e254a;
+  --deep-blue: #0844af;
+  --aqua: #81cac9;
+  --teal: #12666e;
+  --mist: #edf6f5;
+  --orange: #f5971b;
+  --orange-dark: #824000;
+  --background: #f5f7f9;
+  --border: #d5dce4;
+  --line: var(--border);
+  --muted: #4e5c70;
+  --cash: #a25300;
+  --cash-soft: #fff3df;
+  --ledger: var(--deep-blue);
+  --ledger-soft: #edf2fc;
+  --pending: #876300;
+  --pending-soft: #fff7dd;
+  --good: #116342;
+  --input: #fff;
+  --radius: 12px;
+  --brand-font: Montserrat, "Helvetica Neue", Arial, sans-serif;
+  --page-gutter: clamp(1rem, 4vw, 4rem);
+}
+body { font-family: var(--brand-font); background: var(--background); color: var(--ink); }
+h1, h2, h3, h4 { color: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+  outline: 3px solid #027db8;
+  outline-offset: 3px;
+}
+.brand-logo { display: block; width: clamp(138px, 14vw, 172px); height: auto; }
+.header-inner, .hero, .workspace, .footer-inner { width: min(1360px, calc(100% - 2 * var(--page-gutter))); margin-inline: auto; }
+.masthead, .guide-brandbar { background: white; color: var(--navy); }
+.header-inner, .guide-brand-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 72px; padding-block: 7px; border-bottom: 0; gap: 1rem;
+}
+.header-nav { display: flex; align-items: center; gap: clamp(.5rem, 2vw, 1.75rem); }
+.header-nav button, .guide-home {
+  background: transparent; border: 0; padding: .65rem .2rem; color: var(--navy);
+  font: 700 .875rem/1.3 var(--brand-font); text-decoration: none;
+}
+.header-nav button:hover, .guide-home:hover { color: var(--deep-blue); text-decoration: underline; text-underline-offset: .3rem; }
+.hero-band { position: relative; isolation: isolate; overflow: hidden; background: var(--navy); color: #fff; }
+.hero-photo {
+  position: absolute; z-index: -1; inset: 0 0 0 51%; background-color: var(--navy);
+  background-image: linear-gradient(90deg, #1e254a 0%, rgba(30,37,74,.38) 14%, transparent 34%), var(--scenario-photo, url("brand/market-1200.jpg"));
+  background-size: cover; background-position: center, center 46%;
+}
+[data-scenario="wow"] { --scenario-photo: url("brand/transport-1200.jpg"); }
+[data-scenario="bond"] { --scenario-photo: url("brand/farm-diverse-1200.jpg"); }
+.hero { padding-block: clamp(1.85rem, 3.4vw, 3.4rem); }
+.hero-copy { width: 51%; max-width: 680px; }
+.hero .eyebrow, .guide-hero .eyebrow {
+  color: var(--aqua); font-size: .78rem; font-weight: 700; letter-spacing: .14em; margin: 0 0 .85rem;
+}
+.hero h1 { font-size: clamp(2.5rem, 4.8vw, 4.75rem); line-height: 1.01; letter-spacing: -.055em; margin: 0 0 .8rem; }
+.hero h1 span { display: block; color: var(--aqua); }
+.hero-sub { color: white; font-size: clamp(1rem, 1.35vw, 1.18rem); line-height: 1.5; max-width: 32em; margin: 0; text-wrap: balance; }
+.hero-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 0; margin-top: 1.2rem; color: #d6dce9; font-size: .78rem; }
+.hero-meta > * + * { border-left: 1px solid #778399; margin-left: .75rem; padding-left: .75rem; }
+
+.workspace { padding-top: clamp(1.2rem, 2.4vw, 2.1rem); padding-bottom: 1rem; }
+.model-tabs { background: #fff; border-color: var(--border); border-radius: 14px; gap: .35rem; padding: .35rem; }
+.model-tab { color: var(--navy); border-radius: 10px; padding: 1rem 1.2rem; line-height: 1.32; }
+.model-tab small { color: var(--muted); opacity: 1; }
+.model-tab:hover { background: var(--mist); }
+.model-tab.active { background: var(--navy); color: #fff; box-shadow: none; }
+.model-tab.active small { color: #c5dbdf; }
+.model-intro { padding-block: clamp(1.45rem, 2.75vw, 2.45rem); align-items: center; }
+.model-intro h2 { font-size: clamp(1.5rem, 2.3vw, 2.2rem); letter-spacing: -.045em; }
+.model-intro p { max-width: 68ch; line-height: 1.6; }
+.model-key { border-left: 2px solid var(--aqua); padding: .1rem 0 .1rem 1rem; color: var(--muted); }
+.intro-actions { gap: .6rem .85rem; }
+.button, .guide-hero .button {
+  min-height: 43px; border: 1px solid #b0becd; border-radius: 999px; padding: .72rem 1.1rem;
+  background: white; color: var(--navy); font: 700 .875rem/1.25 var(--brand-font);
+}
+.button:hover:not(:disabled) { background: var(--mist); border-color: #719a9d; }
+.button.primary, .guide-hero .button { background: var(--orange); color: var(--navy); border-color: var(--orange); }
+.button.primary:hover:not(:disabled), .guide-hero .button:hover { background: #ffae39; border-color: #ffae39; }
+.button.quiet { background: transparent; border-color: transparent; color: var(--muted); }
+.button.quiet:hover:not(:disabled) { background: #edf1f6; }
+.guide-link { color: var(--deep-blue); }
+.guide-link:hover { color: var(--navy); }
+
+.assumptions { border-top: 4px solid var(--aqua); }
+.field input, .field select, .step-picker select { background-color: white; border-color: #aab6c4; border-radius: 8px; }
+.field input:focus, .field select:focus { border-color: var(--deep-blue); }
+.metric { background: var(--mist); border-color: #c6dfdf; box-shadow: none; }
+.metric-label { color: var(--muted); font-weight: 700; line-height: 1.4; }
+.metric-value { color: var(--navy); font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; }
+.metric-note { color: #4c6066; }
+.section-label, .step-topline .section-label { color: var(--teal); }
+.progress-track { background: #e3e9eb; }
+#progress-fill { background: var(--teal); }
+.step-number { background: var(--aqua); color: var(--navy); }
+.balance-row strong, .metric-value, .earnings-value { font-variant-numeric: tabular-nums; }
+.journal-table th, .annual-table th { background: var(--navy); color: white; }
+.annual-table tr.is-current { background: #fff2de; }
+.journal-header h2 { font-size: clamp(1.35rem, 2vw, 1.85rem); }
+.earnings-row[aria-pressed="true"] { background: var(--mist); border-color: #8ebcbf; }
+.earnings-fill, .earnings-line circle { background: var(--teal); fill: var(--teal); }
+.earnings-fill.negative { background: #9b3639; }
+.earnings-line path { stroke: var(--teal); }
+.earnings-line text { font-family: var(--brand-font); }
+.earnings-trend { background: #f4f7fb; }
+.earnings-track { background: #dce5e7; }
+.fd-root { --fd-cash: var(--cash); --fd-ledger: var(--ledger); --fd-pending: var(--pending); --fd-ink: var(--ink); --fd-muted: var(--muted); --fd-border: var(--border); }
+.fd-scroll { background: #f2f6f9; }
+.fd-edge-label text, .fd-money-token text { font-family: var(--brand-font); }
+.page-footer { background: var(--navy); color: #dce4ee; padding: 1.35rem 0; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: .85rem; }
+.footer-inner .brand-logo { width: 130px; }
+
+.guide-brand-inner { width: min(1100px, calc(100% - 2 * var(--page-gutter))); margin: auto; }
+.guide-hero {
+  border: 0; color: white; padding: clamp(2rem, 5vw, 4rem) max(var(--page-gutter), calc((100% - 1040px)/2));
+  background: linear-gradient(90deg, #1e254a 0%, #1e254af5 48%, #1e254ad9 70%, #1e254a80), url("brand/farm-diverse-1200.jpg") center 46% / cover;
+}
+.guide-hero h1 { letter-spacing: -.04em; }
+.guide-hero p { color: #e9eff6; }
+.guide-hero .toolbar a:not(.button) { color: #fff; text-underline-offset: .22rem; }
+.bond-guide .callout { background: var(--mist); border-color: var(--aqua); }
+.bond-guide main a { color: var(--deep-blue); }
+.bond-guide .sources { overflow-wrap: anywhere; }
+
+@media (max-width: 790px) {
+  .model-intro { align-items: start; }
+  .model-key { border-left: 0; padding: 0; }
+  .hero-copy { width: 58%; }
+  .hero-photo { left: 54%; }
+  .hero-meta { max-width: 30rem; }
+}
+@media (min-width: 621px) and (max-width: 900px) {
+  .model-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .model-tab { align-items: flex-start; padding: .8rem; }
+}
+@media (max-width: 620px) {
+  .header-inner, .guide-brand-inner { min-height: 58px; padding-block: 4px; }
+  .brand-logo { width: 124px; }
+  .header-nav { gap: .8rem; }
+  .hero-band { display: flex; flex-direction: column; }
+  .hero { order: 0; padding-block: 1.4rem 1.15rem; }
+  .hero-photo {
+    position: static; order: 1; z-index: auto; height: clamp(82px, 22vw, 135px);
+    background-image: var(--scenario-photo, url("brand/market-1200.jpg")); background-position: center 42%;
+  }
+  .hero-copy { width: 100%; max-width: none; }
+  .hero h1 { font-size: clamp(1.95rem, 7.2vw, 2.9rem); line-height: 1.08; }
+  .hero h1 span { display: inline; }
+  .hero .eyebrow { margin-bottom: .5rem; }
+  .hero-meta { margin-top: .8rem; font-size: .75rem; }
+  .hero-meta > * + * { margin-left: .45rem; padding-left: .45rem; }
+  .model-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+  .model-tab { justify-content: center; padding: .8rem .15rem; min-height: 44px; font-size: .89rem; }
+  .model-tab span { display: none; }
+  .model-tab::after { content: attr(data-short); }
+  .footer-inner { align-items: flex-start; flex-direction: column; }
+  .guide-hero { background-image: linear-gradient(90deg, #1e254af5, #1e254ae6), url("brand/farm-diverse-1200.jpg"); }
+}
+@media print {
+  body { background: white; color: #121830; }
+  .header-nav, .hero-photo, .guide-brandbar .guide-home, .page-footer { display: none; }
+  .hero-band, .guide-hero { color: var(--navy); background: white; }
+  .header-inner, .hero, .workspace, .guide-brand-inner { width: 100%; }
+  .hero { padding: .5rem 0; }
+  .hero-copy { width: 100%; }
+  .hero h1 span { display: inline; color: var(--navy); }
+  .hero .eyebrow, .hero-sub, .hero-meta, .guide-hero .eyebrow, .guide-hero p, .guide-hero .sub { color: var(--navy) !important; }
+  .guide-hero { padding: 12px 0; }
+  .journal-table th, .annual-table th { color: var(--navy); background: #eef2f5; }
+}

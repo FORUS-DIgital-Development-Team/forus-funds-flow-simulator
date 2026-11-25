@@ -246,6 +246,8 @@
     function replay(){if(destroyed||!scene)return;elapsed=0;paused=false;start();}
     function onResize(){if(resizeTimer)window.clearTimeout(resizeTimer);resizeTimer=window.setTimeout(()=>{resizeTimer=null;if(scene){const wasPaused=paused;stopFrame();layout();paused=wasPaused;start();}},100);}
     const observer=window.ResizeObserver?new window.ResizeObserver(onResize):null;if(observer)observer.observe(container);else window.addEventListener('resize',onResize);
+    // Reposition paths once the branded typeface has set the final node sizes.
+    if (document.fonts) document.fonts.ready.then(() => { if (!destroyed) onResize(); });
     const onMotionPreference=()=>{stopFrame();applyMotion();start();};if(reduced){if(reduced.addEventListener)reduced.addEventListener('change',onMotionPreference);else reduced.addListener(onMotionPreference);}
     function destroy(){destroyed=true;stopFrame();if(resizeTimer)window.clearTimeout(resizeTimer);if(observer)observer.disconnect();else window.removeEventListener('resize',onResize);if(reduced){if(reduced.removeEventListener)reduced.removeEventListener('change',onMotionPreference);else reduced.removeListener(onMotionPreference);}container.innerHTML='';container.classList.remove('fd-root');}
     return {render,setPaused,replay,destroy,durationFor};

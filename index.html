@@ -3,35 +3,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f47721">
+  <meta name="theme-color" content="#1e254a">
   <meta name="description" content="Explore the actual movement of money and the separate ledger movements in illustrative FORUS benefit, WOW and agricultural bond scenarios.">
   <title>FORUS Flow of Funds Simulator</title>
   <link rel="stylesheet" href="styles.css?v=earnings1">
   <link rel="stylesheet" href="diagram.css">
+  <link rel="preload" href="brand/montserrat-700.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="forus.css?v=1">
   <script src="model.js" defer></script>
   <script src="bond-model.js" defer></script>
-  <script src="diagram.js" defer></script>
+  <script src="diagram.js?v=brand1" defer></script>
   <script src="participant-charts.js" defer></script>
-  <script src="app.js?v=earnings1" defer></script>
+  <script src="app.js?v=brand1" defer></script>
 </head>
-<body>
+<body class="simulator">
 <header class="masthead">
   <div class="header-inner">
-    <a class="brand" href="#benefit" aria-label="FORUS funds flow simulator">FORUS<span>Financial flows</span></a>
-    <div class="header-context"><span id="header-currency">Rand denominated</span><span>24 November 2026</span></div>
+    <a class="brand" href="#benefit" aria-label="FORUS funds flow simulator"><img class="brand-logo" src="brand/forus-logo-colour.svg" width="500" height="150" alt="FORUS Digital Cooperative"></a>
+    <nav class="header-nav" aria-label="Simulator sections">
+      <button type="button" data-jump="earnings-heading">Earnings</button>
+      <button type="button" data-jump="journal-heading">Journal</button>
+    </nav>
   </div>
-  <div class="hero">
-    <p class="eyebrow">Interactive financial model</p>
-    <h1>Flow of funds simulator</h1>
-    <p class="hero-sub">See who pays, who receives and what remains owed at each step.</p>
-    <p class="disclosure">Illustrative scenarios · editable commercial assumptions · no live transactions</p>
+  <div class="hero-band">
+    <div class="hero-photo" aria-hidden="true"></div>
+    <div class="hero"><div class="hero-copy">
+      <p class="eyebrow">Illustrative financial model</p>
+      <h1>Flow of funds <span>simulator</span></h1>
+      <p class="hero-sub">See who pays, who receives and what remains owed at each step.</p>
+      <div class="hero-meta"><span id="header-currency">South African rand (ZAR)</span><span>No live transactions</span><time datetime="2026-11-24">24 November 2026</time></div>
+    </div></div>
   </div>
 </header>
 <main class="workspace">
   <nav class="model-tabs" aria-label="Financial model">
-    <button id="tab-benefit" class="model-tab active" type="button" data-model="benefit" aria-pressed="true"><span>Aggregated Benefit Ledger<small>Entitlements to fulfilled benefits</small></span></button>
-    <button id="tab-wow" class="model-tab" type="button" data-model="wow" aria-pressed="false"><span>WOW daily economy<small>Cash in, fares, fuel and rewards</small></span></button>
-    <button id="tab-bond" class="model-tab" type="button" data-model="bond" aria-pressed="false"><span>Agricultural bond<small>Capital, cooperative receipts and repayment</small></span></button>
+    <button id="tab-benefit" class="model-tab active" type="button" data-model="benefit" data-short="Benefits" aria-label="Aggregated Benefit Ledger" aria-pressed="true"><span>Aggregated Benefit Ledger<small>Entitlements to fulfilled benefits</small></span></button>
+    <button id="tab-wow" class="model-tab" type="button" data-model="wow" data-short="WOW" aria-label="WOW daily economy" aria-pressed="false"><span>WOW daily economy<small>Cash in, fares, fuel and rewards</small></span></button>
+    <button id="tab-bond" class="model-tab" type="button" data-model="bond" data-short="Agri bond" aria-label="Agricultural bond" aria-pressed="false"><span>Agricultural bond<small>Capital, cooperative receipts and repayment</small></span></button>
   </nav>
   <section class="model-intro" aria-labelledby="model-heading">
     <div><h2 id="model-heading">Aggregated Benefit Ledger</h2><p id="model-description"></p><div class="intro-actions"><button id="watch-flow" class="button primary" type="button" aria-controls="flow-diagram">Watch animated flow</button><button id="view-earnings" class="button" type="button" aria-controls="earnings">View earnings charts</button><a id="guide-link" class="guide-link" href="docs/FORUS_Aggregated_Benefit_Ledger_Funds_Flow.docx" download>Download flow guide</a></div></div>
@@ -39,7 +47,7 @@
   </section>
   <div class="layout">
     <aside class="assumptions" aria-labelledby="assumption-heading">
-      <div class="section-heading"><h3 id="assumption-heading">Scenario assumptions</h3><span class="editable-tag">Editable</span></div>
+      <div class="section-heading"><h3 id="assumption-heading">Scenario assumptions</h3></div>
       <label class="field bond-view-field" id="bond-view-field" hidden><span>Bond view</span><select id="bond-view"><option value="portfolio">Five-year portfolio waterfall</option><option value="facility">Cooperative facility flow</option></select></label>
       <label class="field preset-field"><span>Choose a scenario</span><select id="preset-select"></select></label>
       <p class="field-help" id="preset-help"></p>
@@ -120,13 +128,13 @@
     <p class="journal-footnote" id="annual-footnote"></p>
   </section>
   <section class="journal-section" aria-labelledby="journal-heading">
-    <div class="journal-header"><div><h2 id="journal-heading">Transaction journal</h2><p>Every movement recorded so far, including entries with no bank transfer.</p></div><div class="export-actions"><button class="button" id="export-csv" type="button">Download CSV</button><button class="button" id="export-json" type="button">Save scenario</button><button class="button quiet" id="print-button" type="button">Print</button></div></div>
+    <div class="journal-header"><div><h2 id="journal-heading" tabindex="-1">Transaction journal</h2><p>Every movement recorded so far, including entries with no bank transfer.</p></div><div class="export-actions"><button class="button" id="export-csv" type="button">Download CSV</button><button class="button" id="export-json" type="button">Save scenario</button><button class="button quiet" id="print-button" type="button">Print</button></div></div>
     <div class="table-scroll"><table class="journal-table"><thead><tr><th>Step</th><th>Movement</th><th>From</th><th>To</th><th class="amount-cell">Amount</th><th>Explanation</th></tr></thead><tbody id="journal-body"></tbody></table></div>
     <p class="journal-footnote">Amounts are calculated in cents. Cash received, ledger balances and issued benefits must not be added together as new money.</p>
   </section>
   <details class="method-section"><summary>Model basis and source evidence</summary><div id="source-content"></div></details>
-  <footer class="page-footer"><span>FORUS · Flow of funds</span><span id="footer-currency">Illustrative model · ZAR · No banking or payment connection</span></footer>
 </main>
+<footer class="page-footer"><div class="footer-inner"><a href="https://forus.coop/" aria-label="FORUS Digital Cooperative website"><img class="brand-logo" src="brand/forus-logo-reversed.svg" width="500" height="150" alt="FORUS Digital Cooperative"></a><span id="footer-currency">Illustrative model · ZAR · No banking or payment connection</span></div></footer>
 <noscript>This simulator requires JavaScript. No payments are processed.</noscript>
 </body>
 </html>

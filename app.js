@@ -172,7 +172,7 @@
     $('guide-link').setAttribute('aria-label', (mode==='bond'?'Open ':'Download ')+def.title+' flow guide');
     if(mode==='bond'){$('guide-link').removeAttribute('download');$('guide-link').setAttribute('target','_blank');$('guide-link').setAttribute('rel','noopener');}
     else{$('guide-link').setAttribute('download','');$('guide-link').removeAttribute('target');$('guide-link').removeAttribute('rel');}
-    $('header-currency').textContent=mode==='bond'?'US dollar denominated':'Rand denominated';
+    $('header-currency').textContent=mode==='bond'?'US dollars (USD)':'South African rand (ZAR)';
     $('footer-currency').textContent='Illustrative model · '+currencyCode()+' · No banking or payment connection';
     $('pending-legend').textContent=mode==='bond'?'Pending obligation':'Pending reward';
     $('bond-view-field').hidden=mode!=='bond';$('bond-view').value=bondView;
@@ -232,6 +232,7 @@
     saveCurrentState();
     stop();
     mode = nextMode;
+    document.body.dataset.scenario = mode;
     const stored = modelStates[stateKey()];
     currentInputs = clone(stored ? stored.inputs : defaultsForMode());
     stepIndex = stored ? stored.stepIndex : 0;
@@ -465,11 +466,13 @@
     if(!window.FlowModel){document.querySelector('.layout').innerHTML='<div class="unavailable"><h3>Simulator is loading</h3><p>The accounting model is not available yet. Refresh the page once the build is complete.</p></div>';return;}
     if (window.ParticipantCharts && $('earnings')) {
       earningsCharts = ParticipantCharts.create({money, esc, goTo});
-      $('view-earnings').addEventListener('click', () => {
-        $('earnings-heading').focus({preventScroll:true});
-        $('earnings').scrollIntoView({block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
-      });
+      $('view-earnings').dataset.jump = 'earnings-heading';
     }
+    document.querySelectorAll('[data-jump]').forEach(button => button.addEventListener('click', () => {
+      const heading = $(button.dataset.jump);
+      heading.focus({preventScroll:true});
+      heading.closest('section').scrollIntoView({block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+    }));
     if(window.FlowDiagram)diagram=FlowDiagram.create($('flow-diagram'));
     else $('flow-diagram').textContent='The diagram is unavailable. Open the transaction details below to follow each movement.';
     document.querySelectorAll('[data-model]').forEach(button=>button.addEventListener('click',()=>switchModel(button.dataset.model)));
