@@ -6,12 +6,13 @@
   <meta name="theme-color" content="#f47721">
   <meta name="description" content="Explore the actual movement of money and the separate ledger movements in illustrative FORUS benefit, WOW and agricultural bond scenarios.">
   <title>FORUS Flow of Funds Simulator</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=earnings1">
   <link rel="stylesheet" href="diagram.css">
   <script src="model.js" defer></script>
   <script src="bond-model.js" defer></script>
   <script src="diagram.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="participant-charts.js" defer></script>
+  <script src="app.js?v=earnings1" defer></script>
 </head>
 <body>
 <header class="masthead">
@@ -33,7 +34,7 @@
     <button id="tab-bond" class="model-tab" type="button" data-model="bond" aria-pressed="false"><span>Agricultural bond<small>Capital, cooperative receipts and repayment</small></span></button>
   </nav>
   <section class="model-intro" aria-labelledby="model-heading">
-    <div><h2 id="model-heading">Aggregated Benefit Ledger</h2><p id="model-description"></p><div class="intro-actions"><button id="watch-flow" class="button primary" type="button" aria-controls="flow-diagram">Watch animated flow</button><a id="guide-link" class="guide-link" href="docs/FORUS_Aggregated_Benefit_Ledger_Funds_Flow.docx" download>Download flow guide</a></div></div>
+    <div><h2 id="model-heading">Aggregated Benefit Ledger</h2><p id="model-description"></p><div class="intro-actions"><button id="watch-flow" class="button primary" type="button" aria-controls="flow-diagram">Watch animated flow</button><button id="view-earnings" class="button" type="button" aria-controls="earnings">View earnings charts</button><a id="guide-link" class="guide-link" href="docs/FORUS_Aggregated_Benefit_Ledger_Funds_Flow.docx" download>Download flow guide</a></div></div>
     <div class="model-key"><span><i class="key-dot cash"></i>Cash transfer</span><span><i class="key-dot ledger"></i>Ledger movement</span><span><i class="key-dot pending"></i><span id="pending-legend">Pending reward</span></span></div>
   </section>
   <div class="layout">
@@ -93,6 +94,25 @@
       </section>
     </div>
   </div>
+  <section class="journal-section earnings" id="earnings" aria-labelledby="earnings-heading">
+    <div class="journal-header earnings-header">
+      <div><h2 id="earnings-heading" tabindex="-1">Who made money?</h2><p id="earnings-basis"></p></div>
+      <label class="field earnings-period">Show amounts through<select id="earnings-period"></select></label>
+    </div>
+    <div class="earnings-grid">
+      <div>
+        <h3>Amount by participant</h3>
+        <ul class="earnings-ranking" id="earnings-ranking"></ul>
+      </div>
+      <div class="earnings-trend">
+        <h3>How the amount changed</h3>
+        <label class="field">Participant<select id="earnings-person"></select></label>
+        <div class="earnings-readout"><strong id="earnings-amount"></strong><span id="earnings-through"></span></div>
+        <div id="earnings-plot"></div>
+        <details class="earnings-history"><summary>See transactions that changed this amount</summary><ol id="earnings-events"></ol></details>
+      </div>
+    </div>
+  </section>
   <section class="annual-section" id="annual-section" aria-labelledby="annual-heading" hidden>
     <div class="journal-header"><div><h2 id="annual-heading">Five-year waterfall</h2><p id="annual-description"></p></div><span class="annual-units">USD · Full scenario</span></div>
     <div id="annual-summary" class="annual-summary"></div>

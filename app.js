@@ -14,6 +14,7 @@
   let timer = null;
   let currentInputs = null;
   let diagram = null;
+  let earningsCharts;
   const modelStates = {};
 
   const definitions = {
@@ -432,6 +433,7 @@
     $('next-button').disabled=stepIndex===result.steps.length-1;
     $('finish-button').disabled=stepIndex===result.steps.length-1;
     renderMetrics(step);renderMovements(step);renderBalances(step);renderReconciliation(step);renderOutcome();renderJournal();renderAnnualResults(step);
+    if (earningsCharts) earningsCharts.render(result, stepIndex);
     if(diagram){diagram.render({mode,result,stepIndex});diagram.setPaused(false);}
     $('replay-diagram').disabled=!diagram||!step.entries.length;
     const current=document.querySelector('.current-step');
@@ -461,6 +463,13 @@
 
   function init(){
     if(!window.FlowModel){document.querySelector('.layout').innerHTML='<div class="unavailable"><h3>Simulator is loading</h3><p>The accounting model is not available yet. Refresh the page once the build is complete.</p></div>';return;}
+    if (window.ParticipantCharts && $('earnings')) {
+      earningsCharts = ParticipantCharts.create({money, esc, goTo});
+      $('view-earnings').addEventListener('click', () => {
+        $('earnings-heading').focus({preventScroll:true});
+        $('earnings').scrollIntoView({block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+      });
+    }
     if(window.FlowDiagram)diagram=FlowDiagram.create($('flow-diagram'));
     else $('flow-diagram').textContent='The diagram is unavailable. Open the transaction details below to follow each movement.';
     document.querySelectorAll('[data-model]').forEach(button=>button.addEventListener('click',()=>switchModel(button.dataset.model)));

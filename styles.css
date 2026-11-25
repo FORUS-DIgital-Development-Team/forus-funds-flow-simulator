@@ -45,3 +45,57 @@
 @media(max-width:900px){.model-tab{padding:15px 12px;font-size:.9375rem}.model-tab small{font-size:.8125rem}}
 @media(max-width:600px){.model-tabs{grid-template-columns:minmax(0,1fr)}.annual-summary{padding:0 17px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}.annual-units{font-size:.875rem}}
 @media print{.annual-section{overflow:visible;break-before:page}.annual-table{min-width:0;font-size:8pt}.annual-table th,.annual-table td{font-size:8pt;padding:7px}.annual-table thead{display:table-header-group}.annual-table tr{break-inside:avoid}}
+
+.earnings { scroll-margin-top: 1rem; }
+.earnings h3 { margin: 0 0 .85rem; font-size: 1.12rem; color: var(--navy); }
+.earnings-header { gap: 1.5rem; align-items: flex-start; }
+.earnings .earnings-header p { max-width: 68ch; }
+.earnings-header .earnings-period { flex: 0 1 20rem; margin: 0; min-width: 0; }
+.earnings .field { font-size: .88rem; font-weight: 700; }
+.earnings .field select { display: block; width: 100%; max-width: 100%; min-height: 42px; margin: .35rem 0 0; background-color: white; }
+.earnings-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(1rem, 4vw, 3rem); align-items: start; padding: 0 clamp(1rem, 2.1vw, 1.7rem) 1.5rem; margin-top: .5rem; }
+.earnings-ranking, .earnings-history ol { list-style: none; margin: 0; padding: 0; }
+.earnings-ranking { display: grid; gap: .35rem; }
+.earnings-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .18rem .65rem; width: 100%; padding: .65rem .75rem; border: 1px solid transparent; border-radius: .5rem; background: transparent; color: var(--ink); text-align: left; }
+.earnings-row[aria-pressed="true"] { background: #edf5f2; border-color: #a7c5bb; }
+.earnings-row:hover { border-color: #a7c5bb; }
+.earnings-name, .earnings-value { font-weight: 700; line-height: 1.3; }
+.earnings-value, .earnings-readout strong, .earnings-history strong { font-variant-numeric: tabular-nums; }
+.earnings-value { text-align: right; overflow-wrap: anywhere; }
+.earnings-row small { grid-column: 1 / -1; color: var(--muted); font-size: .84rem; }
+.earnings-track { position: relative; grid-column: 1 / -1; height: .48rem; margin-top: .27rem; background: #e0e7e7; border-radius: 3px; }
+.earnings-zero { position: absolute; top: -2px; bottom: -2px; border-left: 1px solid #738681; }
+.earnings-fill { position: absolute; top: 0; height: 100%; background: #24765e; border-radius: 2px; }
+.earnings-fill.negative { background: #af482a; }
+.earnings-value.negative, .earnings-readout .negative { color: #96391f; }
+.earnings-trend { min-width: 0; background: #f5f8f8; border: 1px solid var(--border); border-radius: 12px; padding: clamp(.9rem, 2vw, 1.45rem); }
+.earnings-trend .field { display: block; margin: 0; }
+.earnings-readout { display: flex; align-items: baseline; flex-wrap: wrap; gap: .1rem .65rem; margin: 1rem 0 .5rem; }
+.earnings-readout strong { color: var(--navy); font-size: clamp(1.3rem, 2.4vw, 1.9rem); overflow-wrap: anywhere; }
+.earnings-readout span, .earnings-line text { color: var(--muted); fill: var(--muted); }
+.earnings-readout span { font-size: .85rem; }
+.earnings-line { display: block; width: 100%; overflow: visible; }
+.earnings-line text { font: 14px Arial, sans-serif; }
+.earnings-line .axis { stroke: #80928e; }
+.earnings-line .grid { stroke: #ccd8d5; stroke-dasharray: 4 4; }
+.earnings-line path { fill: none; stroke: #24765e; stroke-width: 2.6; stroke-linejoin: round; }
+.earnings-line circle { fill: #185c49; }
+.earnings-empty { margin: 1rem 0; color: var(--muted); }
+.earnings-history { margin-top: .8rem; border-top: 1px solid var(--border); padding-top: .65rem; }
+.earnings-history summary { cursor: pointer; font-size: .88rem; font-weight: 700; }
+.earnings-history li { display: flex; align-items: baseline; justify-content: space-between; gap: .65rem; border-bottom: 1px solid var(--border); padding: .4rem 0; font-size: .85rem; }
+@media (max-width: 760px) {
+  .earnings-grid { grid-template-columns: minmax(0, 1fr); }
+  .earnings-header { display: block; }
+  .earnings-header .earnings-period { margin: .85rem 0 0; }
+}
+@media (max-width: 420px) {
+  .earnings-row { grid-template-columns: minmax(0, 1fr); }
+  .earnings-value { text-align: left; }
+}
+@media print {
+  .earnings-grid { display: block; }
+  .earnings-trend { margin-top: 1rem; }
+  .earnings-row, .earnings-trend { break-inside: avoid; }
+  .earnings-fill, .earnings-track { print-color-adjust: exact; }
+}
